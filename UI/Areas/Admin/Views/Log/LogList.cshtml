@@ -1,0 +1,76 @@
+﻿
+@{
+    ViewBag.Title = "LogList";
+    Layout = "~/Areas/Admin/Views/Shared/AdminLayout.cshtml";
+}
+
+@model List<DTO.LogDTO>
+<section class="content-header">
+    <h1>Log List</h1>
+    <ol class="breadcrumb float-sm-left">
+        <li class="breadcrumb-item"><a>Admin</a></li>
+        <li class="breadcrumb-item"><a>Logs</a></li>
+        <li class="breadcrumb-item active"><a>Log List</a></li>
+    </ol>
+</section>
+<br />
+<div class="card-footer">
+    <button type="submit" class="btn btn-primary" onclick="window.location.href='/Admin/Post/PostList'">Post List</button>
+</div>
+
+<div class="card">
+
+    <!-- /.card-header -->
+    <div class="card-body">
+        <table id="example1" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>User Name</th>
+                    <th>Table Name</th>
+                    <th>Table ID</th>
+                    <th>Process Name</th>
+                    <th>Process Date</th>
+                    <th>Ip Address</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr id="a_@item.ID">
+                        <td>@item.UserName</td>
+                        <td>
+                            @item.TableName
+                        </td>
+                        <td>
+                            @item.TableID
+                        </td>
+                        <td>
+                            @item.ProcessName
+                        </td>
+                        <td>
+                            @item.ProcessDate
+                        </td>
+                        <td>
+                            @item.IpAddress
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th>User Name</th>
+                    <th>Table Name</th>
+                    <th>Table ID</th>
+                    <th>Process Name</th>
+                    <th>Process Date</th>
+                    <th>Ip Address</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    @Html.Partial("~/Areas/Admin/Views/Shared/ModalMessage.cshtml")
+    <!-- /.card-body -->
+</div>
+<script src="~/Areas/Admin/Content/JS/DeleteRecords.js"></script>
+
