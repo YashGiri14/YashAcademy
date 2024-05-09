@@ -9,99 +9,117 @@ using System.Web.Mvc;
 
 namespace DAL
 {
-    public class CategoryDAO : PostContext
+    public class CategoryDAO 
     {
 
         public int AddCategory(Category category)
         {
-			try
-			{
-				db.Categories.Add(category);
-				db.SaveChanges();
-				return category.ID;
-			}
-			catch (Exception ex)
-			{
+            using (POSTDATAEntities db = new POSTDATAEntities())
+            {
+                try
+                {
+                    db.Categories.Add(category);
+                    db.SaveChanges();
+                    return category.ID;
+                }
+                catch (Exception ex)
+                {
 
-				throw ex;
-			}
+                    throw ex;
+                }
+            }
         }
 
         public List<CategoryDTO> GetCategories()
         {
-           List<Category> list = db.Categories.Where(x=>x.isDeleted==false).OrderByDescending(x=>x.AddDate).ToList();
-            List<CategoryDTO> dtolist = new List<CategoryDTO>();
-            foreach (var item in list)
+            using (POSTDATAEntities db = new POSTDATAEntities())
             {
-                CategoryDTO dto = new CategoryDTO();
-                dto.CategoryName = item.CategoryName;
-                dto.ID = item.ID;
-                dtolist.Add(dto);
+                List<Category> list = db.Categories.Where(x => x.isDeleted == false).OrderByDescending(x => x.AddDate).ToList();
+                List<CategoryDTO> dtolist = new List<CategoryDTO>();
+                foreach (var item in list)
+                {
+                    CategoryDTO dto = new CategoryDTO();
+                    dto.CategoryName = item.CategoryName;
+                    dto.ID = item.ID;
+                    dtolist.Add(dto);
+                }
+                return dtolist;
             }
-            return dtolist;
         }
         public static IEnumerable<SelectListItem> GetCategoryForDropDown()
         {
-            IEnumerable<SelectListItem> categorylist = db.Categories.Where(x=>x.isDeleted==false).OrderByDescending(x=>x.AddDate).Select(x=>new SelectListItem()
+            using (POSTDATAEntities db = new POSTDATAEntities())
             {
-                Text = x.CategoryName,
-                Value = SqlFunctions.StringConvert((double)x.ID)
-            }).ToList();
-            return categorylist;
+                IEnumerable<SelectListItem> categorylist = db.Categories.Where(x => x.isDeleted == false).OrderByDescending(x => x.AddDate).Select(x => new SelectListItem()
+                {
+                    Text = x.CategoryName,
+                    Value = SqlFunctions.StringConvert((double)x.ID)
+                }).ToList();
+                return categorylist;
+            }
         }
 
         public CategoryDTO GetCategoryWithID(int ID)
         {
-            try
+            using (POSTDATAEntities db = new POSTDATAEntities())
             {
-                Category category = db.Categories.First(x => x.ID == ID);
-                CategoryDTO dto = new CategoryDTO();
-                dto.ID = category.ID;
-                dto.CategoryName = category.CategoryName;
-                return dto;
-            }
-            catch (Exception ex)
-            {
+                try
+                {
+                    Category category = db.Categories.First(x => x.ID == ID);
+                    CategoryDTO dto = new CategoryDTO();
+                    dto.ID = category.ID;
+                    dto.CategoryName = category.CategoryName;
+                    return dto;
+                }
+                catch (Exception ex)
+                {
 
-                throw ex;
+                    throw ex;
+                }
             }
         }
 
         public void UpdateCategory(CategoryDTO model)
         {
-            try
+            using (POSTDATAEntities db = new POSTDATAEntities())
             {
-                Category ct = db.Categories.First(x => x.ID == model.ID);
-                ct.CategoryName = model.CategoryName;
-                ct.LastUpdateDate = DateTime.Now;
-                ct.LastUpdateUserID = UserStatic.UserID;
-                db.SaveChanges();
-            }
-            catch (Exception ex)
-            {
+                try
+                {
+                    Category ct = db.Categories.First(x => x.ID == model.ID);
+                    ct.CategoryName = model.CategoryName;
+                    ct.LastUpdateDate = DateTime.Now;
+                    ct.LastUpdateUserID = UserStatic.UserID;
+                    db.SaveChanges();
+                }
+                catch (Exception ex)
+                {
 
-                throw ex;
+                    throw ex;
+                }
             }
         }
 
         public List<Post> DeleteCategory(int ID)
         {
-            try
+            using (POSTDATAEntities db = new POSTDATAEntities())
             {
-                Category ct = db.Categories.First(x => x.ID == ID);
-                ct.isDeleted = true;
-                ct.DeletedDate = DateTime.Now;
-                ct.LastUpdateDate = DateTime.Now;
-                ct.LastUpdateUserID = UserStatic.UserID;
-                db.SaveChanges();
-                List<Post> postlist = db.Posts.Where(x=>x.isDeleted==false && x.CategoryID==ID).ToList();
-                return postlist;
-            }
-            catch (Exception ex)
-            {
+                try
+                {
+                    Category ct = db.Categories.First(x => x.ID == ID);
+                    ct.isDeleted = true;
+                    ct.DeletedDate = DateTime.Now;
+                    ct.LastUpdateDate = DateTime.Now;
+                    ct.LastUpdateUserID = UserStatic.UserID;
+                    db.SaveChanges();
+                    List<Post> postlist = db.Posts.Where(x => x.isDeleted == false && x.CategoryID == ID).ToList();
+                    return postlist;
+                }
+                catch (Exception ex)
+                {
 
-                throw ex;
-            }  
+                    throw ex;
+                }
+            } 
         }
     }
 }

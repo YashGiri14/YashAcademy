@@ -82,7 +82,6 @@
       <DependentUpon>PostModel.tt</DependentUpon>
     </Compile>
     <Compile Include="CategoryDAO.cs" />
-    <Compile Include="Class1.cs" />
     <Compile Include="Comment.cs">
       <DependentUpon>PostModel.tt</DependentUpon>
     </Compile>
@@ -106,7 +105,6 @@
     <Compile Include="Post.cs">
       <DependentUpon>PostModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="PostContext.cs" />
     <Compile Include="PostDAO.cs" />
     <Compile Include="PostImage.cs">
       <DependentUpon>PostModel.tt</DependentUpon>

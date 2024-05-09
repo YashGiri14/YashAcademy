@@ -7,11 +7,14 @@ using System.Threading.Tasks;
 
 namespace DAL
 {
-    public class AddressDAO : PostContext
+    public class AddressDAO 
     {
+       
         public int AddAdress(Address ads)
         {
-			try
+            using (POSTDATAEntities db = new POSTDATAEntities())
+            {
+            try
 			{
 				db.Addresses.Add(ads);
 				db.SaveChanges();
@@ -22,63 +25,75 @@ namespace DAL
 
 				throw ex;
 			}
+            }
+			
         }
 
 
         public List<AddressDTO> GetAddresses()
         {
-            List<Address> list = db.Addresses.Where(x=>x.isDeleted==false).OrderBy(x=>x.AddDate).ToList();  
-            List<AddressDTO> dtolist = new List<AddressDTO>();
-            foreach(var item in list){
-                AddressDTO dto = new AddressDTO();
-                dto.ID = item.ID;
-                dto.AddressContent = item.Address1;
-                dto.Email = item.Email;
-                dto.Fax = item.Fax;
-                dto.LargeMapPath = item.MapPathLarge;
-                dto.Phone = item.Phone;
-                dto.Phone2 = item.Phone2;
-                dto.SmallMapPath = item.MapPathSmall;   
-                dtolist.Add(dto);
+            using (POSTDATAEntities db = new POSTDATAEntities())
+            {
+                List<Address> list = db.Addresses.Where(x => x.isDeleted == false).OrderBy(x => x.AddDate).ToList();
+                List<AddressDTO> dtolist = new List<AddressDTO>();
+                foreach (var item in list)
+                {
+                    AddressDTO dto = new AddressDTO();
+                    dto.ID = item.ID;
+                    dto.AddressContent = item.Address1;
+                    dto.Email = item.Email;
+                    dto.Fax = item.Fax;
+                    dto.LargeMapPath = item.MapPathLarge;
+                    dto.Phone = item.Phone;
+                    dto.Phone2 = item.Phone2;
+                    dto.SmallMapPath = item.MapPathSmall;
+                    dtolist.Add(dto);
+                }
+                return dtolist;
             }
-            return dtolist;
         }
 
         public void UpdateAddress(AddressDTO model)
         {
-            try
+            using (POSTDATAEntities db = new POSTDATAEntities())
             {
-                Address ads = db.Addresses.First(x => x.ID == model.ID);
-                ads.Address1 =model.AddressContent;
-                ads.Email = model.Email;
-                ads.Fax = model.Fax;
-                ads.MapPathLarge = model.LargeMapPath;
-                ads.MapPathSmall = model.SmallMapPath;
-                ads.Phone = model.Phone;
-                ads.Phone2 = model.Phone2;
-                db.SaveChanges();
-            }
-            catch (Exception ex)
-            {
+                try
+                {
+                    Address ads = db.Addresses.First(x => x.ID == model.ID);
+                    ads.Address1 = model.AddressContent;
+                    ads.Email = model.Email;
+                    ads.Fax = model.Fax;
+                    ads.MapPathLarge = model.LargeMapPath;
+                    ads.MapPathSmall = model.SmallMapPath;
+                    ads.Phone = model.Phone;
+                    ads.Phone2 = model.Phone2;
+                    db.SaveChanges();
+                }
+                catch (Exception ex)
+                {
 
-                throw ex;
+                    throw ex;
+                }
             }
         }
         public void DeleteAddress(int ID)
         {
-            try
+            using (POSTDATAEntities db = new POSTDATAEntities())
             {
-                Address ads = db.Addresses.First(x => x.ID == ID);
-                ads.isDeleted = true;
-                ads.DeletedDate = DateTime.Now;
-                ads.LastUpdateDate = DateTime.Now;
-                ads.LastUpdateUserID = UserStatic.UserID;
-                db.SaveChanges();
-            }
-            catch (Exception ex) 
-            {
+                try
+                {
+                    Address ads = db.Addresses.First(x => x.ID == ID);
+                    ads.isDeleted = true;
+                    ads.DeletedDate = DateTime.Now;
+                    ads.LastUpdateDate = DateTime.Now;
+                    ads.LastUpdateUserID = UserStatic.UserID;
+                    db.SaveChanges();
+                }
+                catch (Exception ex)
+                {
 
-                throw ex;
+                    throw ex;
+                }
             }
         }
     }
