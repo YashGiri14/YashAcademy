@@ -33,6 +33,8 @@ namespace UI.Controllers
             dto = bll.GetCategoryPostList(CategoryName);
             return View(dto);
         }
+       /* [HttpGet]*/
+        [Route("PostDetail/{ID}")]
         public ActionResult PostDetail (int ID)
         {
             HomeLayoutDTO layoutdto = new HomeLayoutDTO();
@@ -43,6 +45,7 @@ namespace UI.Controllers
             return View(dto);
         }
         [HttpPost]
+        [Route("PostDetail")]
         public ActionResult PostDetail(GeneralDTO model)
         {
             if (model.Name != null && model.Email != null && model.Message != null)

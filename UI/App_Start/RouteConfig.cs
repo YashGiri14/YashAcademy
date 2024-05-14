@@ -25,7 +25,7 @@ namespace UI
             routes.MapRoute(
                 name: "PostDetail",
                 url: "{CategoryName}/{SeoLink}/{ID}",
-                defaults: new { controller = "Home", action = "PostDetail",ID = UrlParameter.Optional,CategoryName = UrlParameter.Optional, SeoLink =UrlParameter.Optional }
+                defaults: new { controller = "Home", action = "Index", ID = UrlParameter.Optional, CategoryName = UrlParameter.Optional, SeoLink = UrlParameter.Optional }
                 );
 
             routes.MapRoute(
